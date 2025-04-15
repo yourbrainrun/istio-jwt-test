@@ -31,7 +31,7 @@ jobs:
         run: |
           # get tag name（cut refs/tags/ prefix）
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          echo "DOCKER_TAG=${CLEAN_TAG}" >> $GITHUB_OUTPUT
+          echo "DOCKER_TAG=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "Extracted tag: ${GITHUB_OUTPUT}"
 
       - name: Login to Azure Container Registry
