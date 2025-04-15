@@ -48,8 +48,8 @@ jobs:
           file: ${{ env.DOCKERFILE_PATH }}    # finger out Dockerfile path
           push: true
           tags: |
-            ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ steps.extract-tag.outputs.DOCKER_TAG }}
-            ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.extract-tag.outputs.DOCKER_TAG }}
+            ${{ secrets.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: |
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.version=${{ steps.extract-tag.outputs.DOCKER_TAG }}
