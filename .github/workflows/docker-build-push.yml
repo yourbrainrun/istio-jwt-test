@@ -1,0 +1,58 @@
+name: Build and Push Docker Image on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'  # match all v prefix tag
+    branches:
+      - develop  # limit develop branch tag touch
+
+env:
+  REGISTRY_NAME: ${{ secrets.REGISTRY_NAME }}
+  IMAGE_NAME: your-image-name
+  DOCKERFILE_PATH: "./Dockerfile"  # Dockerfile path demo: ./Dockerfile dir
+  BUILD_CONTEXT: "./"  # build context app dir
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}  # checkout trigger tag
+
+      - name: Extract Docker Tag
+        id: extract-tag
+        run: |
+          # get tag name（cut refs/tags/ prefix）
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "DOCKER_TAG=${CLEAN_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.BUILD_CONTEXT }}  # config build context
+          file: ${{ env.DOCKERFILE_PATH }}    # finger out Dockerfile path
+          push: true
+          tags: |
+            ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ steps.extract-tag.outputs.DOCKER_TAG }}
+            ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest
+          labels: |
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
+            org.opencontainers.image.version=${{ steps.extract-tag.outputs.DOCKER_TAG }}
+
+      - name: Azure logout
+        run: |
+          az logout
