@@ -32,7 +32,7 @@ jobs:
           # get tag name（cut refs/tags/ prefix）
           TAG_NAME=${GITHUB_REF#refs/tags/}
           echo "DOCKER_TAG=${CLEAN_TAG}" >> $GITHUB_OUTPUT
-          echo "Extracted tag: ${CLEAN_TAG}"
+          echo "Extracted tag: ${GITHUB_OUTPUT}"
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
