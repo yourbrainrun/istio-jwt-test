@@ -34,6 +34,12 @@ jobs:
           echo "DOCKER_TAG=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "Extracted tag: ${GITHUB_OUTPUT}"
 
+      - name: Skip if tag is not valid
+        if: startsWith(steps.extract-tag.outputs.DOCKER_TAG, 'v') != true
+        run: |
+            echo "Tag is not valid (does not start with 'v' or not tag action), skipping build."
+            exit 0
+
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
