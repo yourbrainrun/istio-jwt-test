@@ -31,7 +31,7 @@ jobs:
         run: |
           # get tag name（cut refs/tags/ prefix）
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          echo "DOCKER_TAG=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "DOCKER_TAG=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           echo "Extracted tag: ${GITHUB_OUTPUT} -- ${TAG_NAME}"
 
       - name: Skip if tag is not valid
