@@ -20,8 +20,6 @@ jobs:
       contents: read
       packages: write
 
-    # develop branch and tag startwith v 
-    if: contains(github.ref, 'refs/tags/') && github.ref_name == 'develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
