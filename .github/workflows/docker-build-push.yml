@@ -41,7 +41,7 @@ jobs:
           echo "commit:  ${COMMIT} "
           BROUT=$(git branch -a --contains $COMMIT)
           echo "BROUT:  ${BROUT} "
-          RESULT1 = $(git branch -a --contains $COMMIT | grep -Eq '(^|/)develop(/|$)')
+          RESULT1=$(git branch -a --contains $COMMIT | grep -Eq '(^|/)develop(/|$)')
           echo "RESULT1:  $?"
 
           # check tag belong to which branch
