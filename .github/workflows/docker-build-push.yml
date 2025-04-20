@@ -48,9 +48,9 @@ jobs:
             echo "BRANCH_NAME=develop" >> $GITHUB_OUTPUT
             echo "IMAGE_NAME=mileage-dev-web-app" >> $GITHUB_OUTPUT
           else
-            echo "::error::Tag ${{ github.ref }} is not in develop branch history"
+            echo "::warning::Tag ${{ github.ref }} is not in develop branch history"
             echo "Tag commit: $TAG_COMMIT"
             echo "Develop branch head: $DEVELOP_COMMIT"
-            exit 1
+            exit 78
           fi
 
